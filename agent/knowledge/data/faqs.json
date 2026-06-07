@@ -1,0 +1,50 @@
+[
+  {
+    "question": "What are your opening hours?",
+    "answer": "Soul Imaging Radiology Clinic is open Monday to Friday from 9:00 AM to 5:00 PM, and Saturday from 9:00 AM to 2:00 PM. We are closed on Sundays and public holidays."
+  },
+  {
+    "question": "What imaging services do you offer?",
+    "answer": "We offer a range of imaging services including X-Rays for bones and joints, CT Scans for detailed organ imaging, and Ultrasound for non-invasive assessments."
+  },
+  {
+    "question": "Do I need a referral to book?",
+    "answer": "Yes, for most imaging services a referral from your GP or specialist is required. However, some services like general X-rays may not require one. Please call us if you are unsure."
+  },
+  {
+    "question": "How long does an MRI scan take?",
+    "answer": "A typical MRI scan takes between 30 to 60 minutes, depending on the body part being scanned. Please arrive 15 minutes early to complete your paperwork."
+  },
+  {
+    "question": "Do I need to fast before my scan?",
+    "answer": "Fasting requirements depend on the type of scan. For abdominal ultrasounds, you typically need to fast for 4-6 hours. MRI with contrast may require 2-4 hours of fasting. You will receive specific instructions when your appointment is confirmed."
+  },
+  {
+    "question": "What should I wear to my MRI?",
+    "answer": "Please wear comfortable, loose-fitting clothing with no metal zippers or underwire. You will be asked to remove all jewellery, piercings, and metal objects before your scan."
+  },
+  {
+    "question": "Is MRI safe during pregnancy?",
+    "answer": "MRI without contrast is generally considered safe during pregnancy. However, it is always best to inform our staff and your referring doctor. We will discuss the benefits and risks with you before your appointment."
+  },
+  {
+    "question": "Do you bulk bill?",
+    "answer": "We bulk bill eligible patients with a valid Medicare card and a doctor's referral for most standard imaging services. Please contact us to confirm whether your specific scan is bulk billed."
+  },
+  {
+    "question": "How long will it take to get my results?",
+    "answer": "Reports are typically sent to your referring doctor within 24 to 48 hours. Urgent reports can be expedited. Please contact your doctor for your results."
+  },
+  {
+    "question": "Where are you located?",
+    "answer": "Soul Imaging Radiology Clinic is conveniently located in Sydney. Our exact address will be provided when you confirm your appointment. We have on-site parking available."
+  },
+  {
+    "question": "Can I bring someone with me?",
+    "answer": "Yes, you are welcome to bring a support person with you. However, in some scan rooms, companions may need to wait outside due to radiation or magnetic field safety protocols."
+  },
+  {
+    "question": "What is the cancellation policy?",
+    "answer": "We ask that you provide at least 24 hours notice if you need to cancel or reschedule your appointment. This allows us to offer the slot to other patients."
+  }
+]
