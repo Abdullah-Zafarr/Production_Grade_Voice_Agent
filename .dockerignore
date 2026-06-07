@@ -1,0 +1,22 @@
+# Never bundle secrets or Python bytecode into the Docker image
+.env
+**/.env*
+*.pyc
+__pycache__/
+**/node_modules/
+**/dist/
+**/build/
+**/.DS_Store
+**/.venv/
+**/__pycache__/
+**/*.pyc
+**/.next/
+**/venv/
+**/.git/
+**/.gitignore
+**/tests/
+**/*.md
+**/*.sql
+**/*.docx
+**/.agent/
+**/frontend/Soulbot_Updated/Admin/src/
