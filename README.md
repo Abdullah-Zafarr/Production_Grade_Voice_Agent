@@ -114,4 +114,4 @@ This project represents a **state-of-the-art** integration of modern AI and real
 
 ---
 
-*Made as a part of my internship at Bricklix*
+*Made as a part of my internship at Bricklix.*
