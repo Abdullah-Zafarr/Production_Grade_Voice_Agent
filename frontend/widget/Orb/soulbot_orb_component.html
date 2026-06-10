@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Soulbot Orb Demo</title>
+  <link rel="stylesheet" href="soulbot_orb_component.css" />
+</head>
+<body>
+  <div class="demo">
+    <section class="stage">
+      <div class="orb-wrap">
+        <div class="ambient-glow"></div>
+        <div class="rings"></div>
+        <div class="listen-ring"></div>
+        <div class="speech-ring"></div>
+
+        <div class="orb" id="orb" data-state="idle" aria-label="Interactive Soulbot orb">
+          <div class="thought-cloud" id="thoughtCloud">
+            <div>
+              <div class="thought-label" id="thoughtLabel">Thinking</div>
+              <div class="thought-dots">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="face">
+            <div class="brow left"></div>
+            <div class="brow right"></div>
+
+            <div class="eye left"><div class="eyelid"></div></div>
+            <div class="eye right"><div class="eyelid"></div></div>
+
+            <div class="mouth"></div>
+            <div class="cheeks"></div>
+          </div>
+        </div>
+
+        <div class="status-card">
+          <span class="status-dot" id="statusDot"></span>
+          <span id="statusText">Idle</span>
+        </div>
+      </div>
+    </section>
+
+    <aside class="controls">
+      <div>
+        <h1>CSS + HTML Soulbot Orb</h1>
+        <p>This orb is built with pure HTML, CSS, and a tiny bit of vanilla JS for state switching. You can wire it to your chatbot states: idle, listening, thinking, speaking, and writing.</p>
+      </div>
+
+      <div class="grid" id="controls">
+        <button class="active" data-state="idle">Idle</button>
+        <button data-state="listening">Listening</button>
+        <button data-state="thinking">Thinking</button>
+        <button data-state="speaking">Speaking</button>
+        <button data-state="writing">Writing</button>
+        <button id="blinkBtn">Blink</button>
+      </div>
+
+      <div class="tip">
+        <strong>Writing state:</strong> shows a cloudy thought bubble with animated dots. Use it when the assistant is generating text, before the bot message appears in chat.
+      </div>
+
+      <div class="code" id="integrationHint">Example integration:
+setSoulbotState('listening') when mic is active
+setSoulbotState('thinking') after user input is received
+setSoulbotState('speaking') while TTS audio is playing
+setSoulbotState('writing') while the answer is streaming into chat
+setSoulbotState('idle') when the bot finishes</div>
+    </aside>
+  </div>
+
+  <script src="soulbot_orb_component.js"></script>
+</body>
+</html>

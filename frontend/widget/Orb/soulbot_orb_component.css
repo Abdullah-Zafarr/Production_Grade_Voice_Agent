@@ -1,0 +1,171 @@
+:root {
+  --medical-blue: #06b6d4; /* Match Admin Cyan Accent */
+  --orb-deep-blue: #1e3a8a;
+}
+
+.orb-container,
+.orb-wrap {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 320px;
+  height: 320px;
+  isolation: isolate;
+  pointer-events: none;
+}
+
+.ambient-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 70%);
+  opacity: 0.8;
+  filter: blur(60px);
+  z-index: 1;
+  animation: ambientPulse 10s ease-in-out infinite;
+}
+
+.listen-ring {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  translate: -50% -50%;
+  width: 260px;
+  height: 260px;
+  border: 2px solid var(--medical-blue);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.speech-ring {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  translate: -50% -50%;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  opacity: 0;
+  background: radial-gradient(circle at center, transparent 60%, rgba(6, 182, 212, 0.05) 100%);
+  border: 1px solid rgba(6, 182, 212, 0.1);
+  pointer-events: none;
+}
+
+.orb {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%, 
+    #ffffff 0%,
+    #cbd5e1 20%,
+    #1e40af 60%,
+    #1e3a8a 100%
+  );
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    inset 0 16px 32px rgba(255, 255, 255, 0.1),
+    0 0 60px rgba(6, 182, 212, 0.2);
+  z-index: 2;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: breathing 8s ease-in-out infinite;
+}
+
+.face {
+  position: absolute;
+  inset: 0;
+  transform: translateY(10px);
+}
+
+.eye {
+  position: absolute;
+  width: 42px;
+  height: 56px;
+  top: 70px;
+  border-radius: 50%;
+  background: #020617;
+  overflow: hidden;
+}
+
+.eye.left { left: 55px; }
+.eye.right { right: 55px; }
+
+.eye::before {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  left: 10px;
+  top: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.8);
+}
+
+.eyelid {
+  position: absolute;
+  inset: 0;
+  background: #cbd5e1;
+  transform: translateY(-102%);
+  transition: transform 0.2s ease;
+}
+
+.mouth {
+  position: absolute;
+  left: 50%;
+  bottom: 60px;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 8px;
+  border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0 0 20px 20px;
+}
+
+/* Animations */
+@keyframes breathing {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+@keyframes ambientPulse {
+  0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+.orb[data-state="listening"] .listen-ring {
+  opacity: 1;
+  animation: ringPulse 2s infinite;
+}
+
+@keyframes ringPulse {
+  0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0; }
+}
+
+.orb[data-state="speaking"] .speech-ring {
+  opacity: 1;
+  animation: speechPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes speechPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.6; }
+}
+
+.orb[data-state="speaking"] .mouth {
+  height: 12px;
+  width: 20px;
+  background: rgba(6, 182, 212, 0.2);
+  border-radius: 50%;
+  animation: mouthSpeak 0.2s infinite;
+}
+
+@keyframes mouthSpeak {
+  0%, 100% { transform: translateX(-50%) scaleY(0.8); }
+  50% { transform: translateX(-50%) scaleY(1.2); }
+}
+
+.orb.is-blink .eyelid { transform: translateY(0%); }

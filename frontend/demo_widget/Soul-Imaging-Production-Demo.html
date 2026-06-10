@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soul Imaging | Production Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0b3363;
+            --secondary: #1e40af;
+            --accent: #3b82f6;
+            --background: #f8fafc;
+            --text: #0f172a;
+            --glass: rgba(255, 255, 255, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 3rem;
+            border-radius: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+        }
+
+        h1 { color: var(--primary); margin-bottom: 1rem; }
+        p { color: #64748b; margin-bottom: 2rem; }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #f0fdf4;
+            color: #16a34a;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+        
+        .dot { width: 8px; height: 8px; background: #16a34a; border-radius: 50%; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="status-badge"><span class="dot"></span> Production Live</div>
+        <h1>Soul Imaging Demo</h1>
+        <p>This page is connected to the live production server on Fly.io. You can interact with Sarah using the widget in the corner.</p>
+        <div style="font-size: 0.875rem; color: #94a3b8;">
+            Version 1.2.0 • Sydney Region
+        </div>
+    </div>
+
+    <!-- PRODUCTION WIDGET -->
+    <script src="https://soul-imaging-voice-agent.fly.dev/orb/widget.js" 
+            data-position="bottom-right" 
+            data-color="#0b3363" 
+            data-text="Talk to Sarah"></script>
+</body>
+</html>

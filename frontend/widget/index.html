@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Agent | Soul Imaging</title>
+    <link rel="icon" type="image/png" href="logo/favicon.png?v=3" />
+    <style>
+        :root {
+            /* Admin Panel Colors */
+            --background: #0b111b;      /* Deepest midnight */
+            --foreground: #e2e8f0;
+            --card: #0f172a;           /* Dark slate */
+            --primary: #1e3a8a;        /* Deep blue */
+            --accent: #06b6d4;         /* Electric cyan */
+            --muted: #64748b;          /* Slate grey */
+            --success: #10b981;        /* Emerald */
+            --destructive: #ef4444;    /* Red */
+            --border: rgba(255, 255, 255, 0.08);
+            
+            /* Glass tokens */
+            --glass-bg: rgba(255, 255, 255, 0.04);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-blur: 16px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--background); color: var(--foreground); font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; }
+        h1, h2, h3, .logo-text, .vignette-text { font-family: 'Outfit', sans-serif; }
+
+        .bg-glow { position: fixed; width: 60vw; height: 60vw; border-radius: 50%; filter: blur(120px); z-index: -1; opacity: 0.15; pointer-events: none; }
+        .bg-glow-1 { top: -10%; left: -10%; background: var(--primary); }
+        .bg-glow-2 { bottom: -10%; right: -10%; background: var(--accent); }
+
+        .voice-app-layout { display: flex; flex-direction: column; height: 100vh; }
+        .app-header { height: 70px; padding: 0 40px; display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.10); background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 100; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .logo-img { height: 32px; width: auto; border-radius: 4px; object-fit: contain; }
+        .logo-text { font-size: 1.25rem; font-weight: 700; }
+        .logo-text .accent { color: var(--accent); }
+        .status-badge { display: flex; align-items: center; gap: 8px; background: rgba(0, 0, 0, 0.3); padding: 6px 14px; border-radius: 100px; border: 1px solid var(--border); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+        .status-badge.online .status-dot { background: var(--success); box-shadow: 0 0 10px var(--success); }
+        .btn-icon:hover { color: var(--foreground); background: var(--glass-border); }
+
+        .admin-box-btn { 
+            padding: 8px 18px; 
+            background: var(--accent); 
+            border: none;
+            border-radius: 6px; 
+            color: #000; 
+            font-size: 0.75rem; 
+            font-weight: 800; 
+            text-decoration: none; 
+            transition: all 0.2s; 
+            text-transform: uppercase; 
+            letter-spacing: 1.2px;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+        }
+        .admin-box-btn:hover { 
+            background: #fff; 
+            color: #000; 
+            transform: translateY(-1px);
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.6);
+        }
+
+        .interaction-grid { flex: 1; display: grid; grid-template-columns: 320px 1fr 320px; gap: 20px; padding: 30px 40px; overflow: hidden; }
+        .panel { display: flex; flex-direction: column; overflow: hidden; }
+        .glass-card { background: rgba(255, 255, 255, 0.07); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 16px; transition: all 0.3s; }
+        .panel-title { font-size: 0.85rem; font-weight: 600; color: var(--muted); display: flex; align-items: center; gap: 8px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .panel-title i { width: 14px; height: 14px; }
+        .vignette-text { font-size: 2.5rem; font-weight: 700; color: var(--foreground); letter-spacing: -1px; }
+        .volume-meter { height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; overflow: hidden; }
+        .volume-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary), var(--accent)); transition: width 0.1s; }
+        .transcript-container { height: 100%; display: flex; flex-direction: column; }
+        .transcript-feed { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+        .transcript-item { 
+            position: relative;
+            font-size: 0.95rem; 
+            line-height: 1.5; 
+            padding: 12px 16px; 
+            border-radius: 12px;
+            max-width: 85%;
+            width: fit-content;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 16px;
+        }
+        .transcript-item::before {
+            content: attr(data-sender);
+            position: absolute;
+            top: -18px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+            opacity: 0.6;
+        }
+        .transcript-item.user { 
+            align-self: flex-end;
+            background: rgba(6, 182, 212, 0.1);
+            border-color: rgba(6, 182, 212, 0.2);
+            color: var(--accent);
+            border-bottom-right-radius: 2px;
+        }
+        .transcript-item.user::before { right: 4px; color: var(--accent); }
+        .transcript-item.bot { 
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: var(--foreground);
+            border-bottom-left-radius: 2px;
+        }
+        .transcript-item.bot::before { left: 4px; }
+        .transcript-item.system { 
+            align-self: center;
+            max-width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--muted);
+            font-size: 0.8rem;
+            text-align: center;
+            opacity: 0.8;
+            padding: 4px;
+            margin-top: 4px;
+        }
+        .transcript-item.system::before { display: none; }
+        .transcript-placeholder { color: var(--muted); font-size: 0.85rem; font-style: italic; text-align: center; margin-top: 40px; }
+
+        .panel-center { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .orb-focus { display: flex; flex-direction: column; align-items: center; gap: 40px; }
+        .status-text { text-align: center; font-size: 1.25rem; font-weight: 500; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; min-height: 1.5em; }
+
+        .app-footer { height: 140px; display: flex; align-items: center; justify-content: center; padding-bottom: 20px; }
+        .controls-container { display: flex; align-items: flex-end; gap: 40px; padding: 20px 48px; border-radius: 100px; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255,255,255,0.10); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .btn-wrapper { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .btn-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: var(--muted); letter-spacing: 1px; }
+        .control-btn { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--border); background: var(--glass-bg); color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; outline: none; }
+        .control-btn:hover { color: var(--foreground); background: var(--glass-border); transform: translateY(-2px); }
+        .control-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
+        .main-action-btn { width: 72px; height: 72px; border-radius: 50%; border: none; background: var(--accent); color: #000; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; position: relative; box-shadow: 0 0 20px rgba(6, 182, 212, 0.4); outline: none; }
+        .main-action-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(6, 182, 212, 0.6); }
+        .main-action-btn.active { background: var(--destructive); color: #fff; box-shadow: 0 0 20px rgba(239, 68, 68, 0.4); }
+        .main-action-btn.active + .btn-label { color: var(--destructive); }
+
+        .orb-container { position: relative; width: 300px; height: 300px; display: flex; align-items: center; justify-content: center; }
+        .orb { box-shadow: inset 0 16px 32px rgba(255,255,255,0.1), 0 24px 64px rgba(0,0,0,0.55), 0 0 80px rgba(6,182,212,0.18) !important; }
+        .glass-card.stat-box { height: auto; min-height: 80px; }
+        .glass-card.transcript-container { height: auto; min-height: 200px; flex: 1; }
+        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+        .animate-pulse { animation: pulse 2s infinite ease-in-out; }
+
+        /* --- SVG Morph Animation --- */
+        .morph-icon { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .icon-agent { transition: opacity 0.35s ease; opacity: 1; }
+        .icon-close { transition: opacity 0.35s ease 0.1s; opacity: 0; }
+        .main-action-btn.active .morph-icon { transform: rotate(180deg); }
+        .main-action-btn.active .icon-agent { opacity: 0; }
+        .main-action-btn.active .icon-close { opacity: 1; }
+
+        /* --- Pulse Ring (idle state only) --- */
+        .main-action-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            animation: pulseRing 2s ease-out infinite;
+            pointer-events: none;
+        }
+        .main-action-btn.active::after,
+        .main-action-btn.long-pressing::after { animation: none; opacity: 0; }
+        @keyframes pulseRing {
+            0% { transform: scale(1); opacity: 0.7; }
+            100% { transform: scale(1.9); opacity: 0; }
+        }
+
+        /* --- Long-Press Progress Ring --- */
+        @property --lp-angle {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false;
+        }
+        .main-action-btn::before {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            background: conic-gradient(var(--destructive) var(--lp-angle), transparent var(--lp-angle));
+            -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+            mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+            pointer-events: none;
+            opacity: 0;
+            --lp-angle: 0deg;
+            z-index: 3;
+        }
+        .main-action-btn.long-pressing::before {
+            opacity: 1;
+            animation: longPressProgress 1.5s linear forwards;
+        }
+        @keyframes longPressProgress {
+            from { --lp-angle: 0deg; }
+            to { --lp-angle: 360deg; }
+        }
+
+        /* Widget Mode / Responsive */
+        @media (max-width: 600px) {
+            .app-header, .panel-left, .panel-right { display: none !important; }
+            .interaction-grid { grid-template-columns: 1fr; padding: 10px; }
+            .orb-container { width: 200px; height: 200px; }
+            .vignette-text { font-size: 1.5rem; }
+            .status-text { font-size: 1rem; }
+            body { background: transparent; }
+            .bg-glow { display: none; }
+        }
+    </style>
+    <link rel="stylesheet" href="Orb/soulbot_orb_component.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- LiveKit SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js"></script>
+</head>
+<body>
+    <div id="app-container" class="voice-app-layout">
+        <!-- Background decorative elements -->
+        <div class="bg-glow bg-glow-1"></div>
+        <div class="bg-glow bg-glow-2"></div>
+        
+        <!-- TOP NAV -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="brand">
+                    <img src="logo/favicon.png?v=3" alt="Soul Imaging" class="logo-img" />
+                    <span class="logo-text">Soul <span class="accent">Imaging</span></span>
+                </div>
+                <div class="header-actions">
+                    <a href="/admin" id="admin-link" class="admin-box-btn">
+                        Admin
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN INTERACTION AREA -->
+        <main class="interaction-grid">
+            <!-- LEFT: SESSION STATS -->
+            <section class="panel panel-left" style="display:flex; flex-direction:column; gap:20px;">
+                <div class="glass-card stat-box" style="padding:24px;">
+                    <h3 class="panel-title"><i data-lucide="clock"></i> Session Time</h3>
+                    <div id="call-timer" class="vignette-text">00:00</div>
+                </div>
+                <div class="glass-card stat-box" style="padding:24px;">
+                    <h3 class="panel-title"><i data-lucide="activity"></i> Voice Activity</h3>
+                    <div class="volume-meter">
+                        <div id="volume-bar" class="volume-fill"></div>
+                    </div>
+                </div>
+                <div class="glass-card stat-box" style="padding:24px;">
+                    <h3 class="panel-title"><i data-lucide="database"></i> Identity</h3>
+                    <p id="agent-display-name" style="font-size:0.875rem; color:var(--muted); font-weight:500;">Awaiting connection...</p>
+                </div>
+            </section>
+
+            <!-- CENTER: THE ORB -->
+            <section class="panel-center">
+                <div class="orb-focus">
+                    <div class="orb-container">
+                        <!-- Orb from separate component -->
+                        <div class="orb" id="orb" data-state="idle">
+                            <div class="face">
+                                <div class="brow left"></div>
+                                <div class="brow right"></div>
+                                <div class="eye left"><div class="eyelid"></div></div>
+                                <div class="eye right"><div class="eyelid"></div></div>
+                                <div class="mouth"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="orb-status-text" class="status-text animate-pulse">
+                        Ready to connect
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT: TRANSCRIPTION -->
+            <section class="panel panel-right">
+                <div class="glass-card transcript-container">
+                    <div class="panel-header" style="border-bottom: 1px solid rgba(255,255,255,0.1); padding:16px;">
+                        <h3 class="panel-title"><i data-lucide="message-square"></i> Real-time Transcription</h3>
+                    </div>
+                    <div id="transcript-feed" class="transcript-feed">
+                        <div class="transcript-placeholder">
+                            Connection established... awaiting speech.
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- FOOTER CONTROLS -->
+        <footer class="app-footer">
+            <div class="controls-container">
+                <div class="btn-wrapper">
+                    <button id="mute-btn" class="control-btn" title="Mute Microphone">
+                        <i data-lucide="mic"></i>
+                    </button>
+                    <span class="btn-label">Mute</span>
+                </div>
+                
+                <div class="btn-wrapper">
+                    <button id="action-btn" class="main-action-btn" title="Start Session">
+                        <svg class="morph-icon" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <g class="icon-agent">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            </g>
+                            <g class="icon-close">
+                                <line x1="18" y1="6" x2="6" y2="18"/>
+                                <line x1="6" y1="6" x2="18" y2="18"/>
+                            </g>
+                        </svg>
+                    </button>
+                    <span id="action-label" class="btn-label">Connect</span>
+                </div>
+                
+                <div class="btn-wrapper">
+                    <button id="reset-btn" class="control-btn" title="End Session">
+                        <i data-lucide="phone-off"></i>
+                    </button>
+                    <span class="btn-label">Ending</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="Orb/soulbot_orb_component.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soul Imaging | AI Voice Agent Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0b3363;
+            --secondary: #1e40af;
+            --accent: #3b82f6;
+            --background: #f8fafc;
+            --text: #0f172a;
+            --glass: rgba(255, 255, 255, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at top right, #e0f2fe, transparent),
+                        radial-gradient(circle at bottom left, #dbeafe, transparent);
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            text-align: center;
+            padding: 2rem;
+            z-index: 2;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--accent);
+            color: white;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        p {
+            font-size: 1.25rem;
+            color: #475569;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        .cta-container {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 10px 25px -5px rgba(11, 51, 99, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(11, 51, 99, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .floating-cards {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .card {
+            position: absolute;
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .card-1 { top: 15%; left: 10%; animation-delay: 0s; }
+        .card-2 { top: 20%; right: 10%; animation-delay: 2s; }
+        .card-3 { bottom: 15%; left: 15%; animation-delay: 4s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .demo-instructions {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            max-width: 300px;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            z-index: 10;
+        }
+
+        .demo-instructions h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-instructions p {
+            font-size: 0.875rem;
+            margin-bottom: 0;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="floating-cards">
+            <div class="card card-1">
+                <span style="font-size: 2rem;">🎙️</span>
+                <p style="font-size: 0.8rem; margin: 0.5rem 0 0;">Real-time Voice AI</p>
+            </div>
+            <div class="card card-2">
+                <span style="font-size: 2rem;">📅</span>
+                <p style="font-size: 0.8rem; margin: 0.5rem 0 0;">Auto-Scheduling</p>
+            </div>
+            <div class="card card-3">
+                <span style="font-size: 2rem;">🧠</span>
+                <p style="font-size: 0.8rem; margin: 0.5rem 0 0;">Smart Knowledge Base</p>
+            </div>
+        </div>
+
+        <div class="hero-content">
+            <div class="badge">Next-Gen Patient Experience</div>
+            <h1>The Voice of Soul Imaging.</h1>
+            <p>Experience Sarah, our advanced AI medical receptionist. She handles bookings, answers clinic questions, and manages patient intake with human-like precision.</p>
+            <div class="cta-container">
+                <a href="#" class="btn btn-primary" onclick="document.querySelector('button[aria-label=\"Talk to Sarah\"]').click(); return false;">Try Talking Now</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-instructions">
+        <h4>Demo Guide</h4>
+        <p>Click the <b>Blue Phone Icon</b> in the bottom right to start a conversation with Sarah.</p>
+    </div>
+
+    <!-- 
+        SOUL IMAGING WIDGET 
+        Connects to the local server started on port 8000
+    -->
+    <script src="/orb/widget.js" 
+            data-position="bottom-right" 
+            data-color="#0b3363" 
+            data-text="Talk to Sarah"></script>
+</body>
+</html>
