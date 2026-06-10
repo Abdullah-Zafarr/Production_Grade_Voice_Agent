@@ -113,6 +113,5 @@ This project represents a **state-of-the-art** integration of modern AI and real
 © 2026 Soul Imaging. All Rights Reserved. Built with ❤️ for the future of radiology.
 
 ---
-*Last updated: May 5, 2026*
 
-*Activity Log: Added historical contribution commits for May 1-5, 2026.*
+*Made as a part of my internship at Bricklix*
