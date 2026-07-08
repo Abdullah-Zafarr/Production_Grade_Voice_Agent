@@ -110,7 +110,7 @@ This project represents a **state-of-the-art** integration of modern AI and real
 
 ---
 
-© 2026 Soul Imaging. All Rights Reserved. Built with ❤️ for the future of radiology
+© 2026 Soul Imaging. All Rights Reserved. Built with ❤️ for the future of radiology.
 
 ---
 
