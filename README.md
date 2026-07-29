@@ -20,7 +20,7 @@ Click the link below to talk to the AI Orb directly from your browser:
 ## 📸 Screenshots & Interface
 
 ### **Admin Control Center**
-Manage your clinics AI settings, monitor live calls, and view detailed analytics.
+Manage your clinics AI settings, monitor live calls, and view detailed analytics
 
 ![Voice Agent Front End](docs/screenshots/voice%20agent%20front%20end.PNG)
 
